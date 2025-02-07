@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.3.xsd
+		http://www.springframework.org/schema/beans https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.3.xsd">
+	
+	<!-- Root Context: defines shared resources visible to all other web components -->
+	
+	<!-- 파일업로드를 위한 클래스 객체 생성 -->
+	<bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver"></bean>
+
+	
+	<!--  Interceptor는 클라이언트가 접속하면 DispacherServlet이 접속받아 
+		접속한 메인주소를 알아낸 후 매핑주소를 이동하기전, 이동후, 뷰페이지이동전에 Interceptor를 수행한다.
+		
+		환경설정
+		namespaces탭에서 context,mvc를 추가한다.
+	 -->
+	 <mvc:interceptors>
+	 	<mvc:interceptor>
+			<mvc:mapping path="/bbs/write"/>	
+			<mvc:mapping path="/bbs/writeOk"/>
+			<mvc:mapping path="/bbs/edit"/>
+			<mvc:mapping path="/bbs/editOk"/>
+			<mvc:mapping path="/bbs/del"/> 
+			<mvc:mapping path="/data/dataWrite"/>	
+			<mvc:mapping path="/data/dataWriteOk/"/>
+			<mvc:mapping path="/data/dataEdit"/>
+			<mvc:mapping path="/data/dataEditOk"/>
+			<mvc:mapping path="/data/dataDel"/>
+			<mvc:mapping path="/member/edit"/>
+			<mvc:mapping path="/member/editOk"/>
+			<mvc:mapping path="/member/logout"/> 
+			<bean class="com.ict.myapp.LoginInterceptor"></bean>
+	 	</mvc:interceptor>
+	 </mvc:interceptors>
+</beans>

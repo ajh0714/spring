@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.ict.myapp.dao.BbsDAO">
+  	<insert id="bbsInsert">
+  		insert into bbs(subject,content,userid,ip)
+  		values(#{subject},#{content},#{userid},#{ip})
+  	</insert>
+  	<select id="bbsTotalRecord" resultType="int">
+  		select count(news_no) cnt from bbs
+  		 <if test="searchWord !=null and searchWord!=''">
+  		 	where ${searchKey} like '%${searchWord}%'
+  		 </if>
+  	</select>
+  	<select id="bbsSelect">
+  		select news_no, subject, userid,hit,date_format(writedate, '%m-%d %h-%i') writedate
+  		from bbs
+  		<if test="searchWord!=null and searchWord!=''">
+  			where ${searchKey} like '%${searchWord}%'
+  		</if>
+  		 order by news_no desc limit ${onePageRecord} offset ${offset}
+  	</select>
+  	<update id="hitCount">
+  		update bbs set hit = hit+1 where news_no=${param1}
+  	</update>
+  	<select id="bbsViewSelect" resultType="com.ict.myapp.vo.BbsVO">
+  		select news_no, subject, content, userid, hit, writedate from bbs where news_no=${param1}
+  	</select>
+  	<update id = "bbsUpdate">
+  		update bbs set subject=#{subject}, content=#{content} where news_no=${news_no}
+  	</update>
+  	<delete id="bbsDelete">
+  		delete from bbs where news_no=${param1}
+  	</delete>
+  </mapper>

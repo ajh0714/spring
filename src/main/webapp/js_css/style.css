@@ -1,0 +1,44 @@
+@charset "UTF-8";
+
+body,ul,li{
+	margin:0;
+	padding:0;
+}
+
+ul{
+	list-style-type:none;
+}
+
+a:Link, a:visited{
+	color:#222;
+	text-decoration:none;
+}
+#logo{
+	height:100px;
+	line-height:100px;
+	text-align:center;
+	font-size:3em;
+}
+.main-menu a:Link, .main-menu a:visited{
+	color:yellow;	
+}
+
+.main-menu{
+	display:flex;
+	justify-content:center;
+	background-color:navy;
+	font-size:1.2em;
+	
+}
+.main-menu>div{
+	padding:10px;
+}
+
+footer{
+	height:50px;
+	line-height:50px;
+	text-align:center;
+	background-color:#888;
+	color:white;
+	
+}

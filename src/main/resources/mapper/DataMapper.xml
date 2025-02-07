@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.ict.myapp.dao.DataDAO">
+	<insert id="dataInsert">
+		insert into data(subject, content, userid, filename)
+		values(#{subject}, #{content}, #{userid}, #{filename})
+	</insert>
+	<select id = "dataAllSelect" resultType="com.ict.myapp.vo.DataVO">
+		select no, subject, userid, filename from data order by no desc
+	</select>
+	<select id = "dataSelect" resultType="com.ict.myapp.vo.DataVO">
+		select no, subject, content, userid, hit, writedate, filename from data where no=${param1}
+	</select>
+	<update id="dataUpdate">
+		update data set subject=#{subject}, content=#{content} 
+		<if test = "filename!=null">
+			,filename=#{filename}
+		</if>
+		where no=${no}
+	</update>
+	<delete id="dataDelete">
+		delete from data where no=${param1}
+	</delete>
+  </mapper>
