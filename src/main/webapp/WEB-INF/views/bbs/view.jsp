@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
 	function delCheck(){
 		// alert, confirm(y,n), prompt(value)
@@ -8,11 +9,76 @@
 			location.href="${pageContext.request.contextPath}/bbs/del?news_no=${vo.news_no}"
 		}
 	}
+	
+	//댓글 비동기 처리
+	$(function(){
+		//댓글목록 : 비동기로 댓글목록 가져오기---------------------------------------
+		function replyList(){
+			//DB에서 현재글과 관련있는 댓글목록을 가져오기
+			
+			var params = {
+					news_no:${vo.news_no}
+			};
+			$.ajax({
+				url : "/myapp/reply/bbsReplyList",
+				type: "GET",
+				data : params,
+				success : function(results){
+					console.log(results);
+					
+				}, error : function(e){
+					console.log(e.responseText);
+				}
+			});
+		}
+		//댓글등록 ---------------------------------------
+		$("#bbsReplyWrite").click(function(){
+			if($("#comment").val()==""){
+				alert("댓글을 입력후 등록하세요..");
+				return false;
+			}
+			//var params = "news_no=${vo.news_no}&comment="+$("comment").val(); // news_no=35&comment=입력한 댓글
+			var params = {
+					news_no:${vo.news_no},
+					comment:$("#comment").val()
+			}
+			$.ajax({
+				url : "/myapp/reply/bbsReplyWrite",
+				type:"POST",
+				data:params,
+				success:function(results){
+					console.log(results);
+					if(results=="1"){
+						$("#comment").val("");
+					}else{
+						alert("댓글등록이 등록되지 않았습니다.");
+					}
+					//댓글등록 출력
+					replyList();
+				},error:function(error){
+					console.log(error.responseText);
+				}
+			});
+			
+		});
+		//댓글수정 ---------------------------------------
+		
+		//댓글삭제 ---------------------------------------
+		
+		//댓글목록출력 : 처음 글내용보기로 오면 댓글목록이 나와야 함.
+		replyList();
+	});
+	
 </script>
+<style>
+	#comment{
+		width:500px; height:100px;
+	}
+</style>
 <div class="container">
 <h1>글내용보기</h1>
 <ul>
-	<li>번호 : ${vo.news_no }</li>
+	<li>번호 : ${vo.news_no}</li>
 	<li>작성자 : ${vo.userid}, 조회수 : ${vo.hit }, 등록일 : ${vo.writedate}</li>
 	<li>제목</li>
 	<li>${vo.subject}</li>
@@ -22,8 +88,33 @@
 <div>
 	<c:if test="${logid==vo.userid }">
 		<a href="${pageContext.request.contextPath}/bbs/edit?news_no=${vo.news_no}">수정</a>
-	
 		<a href="javascript:delCheck()">삭제</a>
 	</c:if>	
+</div>
+<!-- 댓글 ares-->
+<div style="padding:10px 0">
+	<c:if test="${logStatus=='Y'}">
+		<!-- 댓글등록(로그인 상태인 경우 댓글폼이 보이도록 함.) -->
+		<p>
+		<textarea name="comment" id="comment"></textarea>
+		<button id="bbsReplyWrite">댓글등록</button>
+		</p>
+	</c:if>
+	<!-- 댓글목록 -->
+	<div style="background:#ddd;">댓글목록</div>
+	<div id="replyList">
+		<p>
+			<b>goguma(2024-02-10)</b>
+			<input type="button" value="Edit"/>		
+			<input type="button" value="Del"/>
+			<div style="font-weight:bold">댓글내용</div>
+			<hr/>
+		</p>
+		<p>
+		 	gildong(2024-02-10)
+		 	<div style="font-weight:bold">댓글내용</div>
+		 	<hr/>
+		</p>
+	</div>
 </div>
 </div>

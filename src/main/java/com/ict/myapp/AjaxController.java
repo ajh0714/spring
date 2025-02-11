@@ -1,6 +1,8 @@
 package com.ict.myapp;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
@@ -104,8 +106,16 @@ public class AjaxController {
 	//Map 리턴
 	@GetMapping("/ajax/ajaxMap")
 	@ResponseBody
-	public ___ ajaxMap(PagingVO pVO) {
+	public Map ajaxMap(PagingVO pVO) {
 		
+		Map map = new HashMap();
+		//검색어를 이용한 레코드선택
+		map.put("bbsList", serviceBbs.bbsSelect(pVO));
+		//페이지정보(pVO)
+		map.put("page", pVO);
+		//총레코드수
+		map.put("totalRecord",serviceBbs.bbsTotalRecord(pVO));
 		
+		return map;
 	}
 }

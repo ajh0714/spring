@@ -30,14 +30,58 @@
         	line-height:20px;
         }
     </style>
+<script>
 
+// 아이디 중복검사 (비동기식으로 구현)
+	function idDuplicate(){
+	var userid = document.getElementById("userid").value;
+	//아이디가 입력된경우
+	if(userid!=""){
+			//비동기식으로 서버에 아이디를 보내고 DB조회하여 존재유무를 리턴받는다.
+			var xHttp = new XMLHttpRequest();
+			
+			//응답받으면
+			xHttp.onreadystatechange = function(){
+				if(this.readyState==4 && this.status==200){
+					if(this.responseText=="1"){
+						document.getElementById("idCheck").innerHTML = "<span style='color:red'>사용불가능한 아이디입니다.</span>";
+						document.getElementById("idCheckStatus").value='N';
+					}else{
+						document.getElementById("idCheck").innerHTML = "<span style='color:green'>사용가능한 아이디입니다.</span>";
+						document.getElementById("idCheckStatus").value='Y';
+					}
+				}
+				else{
+				}
+			}
+			
+			xHttp.open("GET","/myapp/member/idDuplicate?userid="+userid,true);
+			
+			xHttp.send();
+		}else{
+			alert("아이디를 입력후 중복검사하세요.");
+		}
+	}
+	function idDuplicateStatus(){
+		document.getElementById("idCheckStatus").value="N";
+	}
+	fucntion formCheck(){
+		if(document.getElementById("idCheckStatus")=='N'){
+		alert("아이디중복 검사를 하세요..");	
+		return false;
+		}
+	}
+</script>	
+		
  <div class="container">
         <h1>회원가입 폼</h1>
         <form method="post" action="/myapp/member/formOk" id="frm">
             <ul>
                 <li>아이디</li>
-                <li><input type="text" name="userid" id="userid">
-                    <input type="button" value="아이디 중복확인">
+                <li><input type="text" name="userid" id="userid" onkeyup="idDuplicateStatus()"/>
+                    <input type="button" value="아이디중복확인" onclick="idDuplicate()">
+                    <span id="idCheck"></span>
+                    <input type="hidden" id="idCheckStatus" value="N"/>
                 </li>
                 <li>비밀번호</li>
                 <li><input type="password" name="userpwd" id="userpwd"></li>

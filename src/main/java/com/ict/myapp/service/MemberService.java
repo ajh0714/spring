@@ -7,4 +7,5 @@ public interface MemberService {
 	public MemberVO loginOk(String userid, String userpwd);
 	public MemberVO memberSelect(String userid);
 	public int memberUpdate(MemberVO vo);
+	public int idDuplicate(String userid);
 }

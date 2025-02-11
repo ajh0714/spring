@@ -6,12 +6,17 @@ import javax.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.ict.myapp.service.MemberService;
 import com.ict.myapp.vo.MemberVO;
+import com.mysql.cj.log.Log;
+
+import lombok.extern.slf4j.Slf4j;
 
 @Controller
+@Slf4j
 public class MemberController {
 	
 	
@@ -84,5 +89,14 @@ public class MemberController {
 		int result = service.memberUpdate(vo);
 		System.out.println(result);
 		return "redirect:edit";
+	}
+	
+	//==아이디 중복검사 =======================
+	@GetMapping("/member/idDuplicate")
+	@ResponseBody
+	public String idDuplicate(String userid){
+		log.info("전송된 아이디는 {}입니다", userid);
+		//반환형은 String, object, List, Map들 클래스는 가능하지만 int,double은 불가능
+		return Integer.toString(service.idDuplicate(userid));
 	}
 }

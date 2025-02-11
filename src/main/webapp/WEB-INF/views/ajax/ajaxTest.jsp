@@ -95,7 +95,22 @@
 				data : param,
 				type : "GET",
 				success : function(results){
+					console.log(results);
 					
+					var tag = "<div>총레코드수:" +results.totalRecord+"개</div>";
+					tag += "<div>현재페이지 :"+results.page.nowPage+", 검색어 : "+results.page.searchWord+"</div>";
+					
+					tag += "<table class='table table-dark table-hover'>";
+					//					index, 값(vo)
+					$(results.bbsList).each(function(i, obj){
+						tag += "<tr><td>"+obj.news_no +"</td>";
+						tag += "<td>"+obj.subject +"</td>";
+						tag += "<td>"+obj.userid +"</td>";
+						tag += "<td>"+obj.hit +"</td>";
+						tag += "<td>"+obj.writedate +"</td></tr>";
+					});
+					tag+="</table>";
+					$("#view").append(tag);
 				}, error:function(e){
 					console.log(e.responseText);
 				}

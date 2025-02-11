@@ -30,4 +30,9 @@ public class MemberServiceImpl implements MemberService {
 	public int memberUpdate(MemberVO vo) {
 		return dao.memberUpdate(vo);
 	}
+	@Override
+	public int idDuplicate(String userid) {
+		// TODO Auto-generated method stub
+		return dao.idDuplicate(userid);
+	}
 }

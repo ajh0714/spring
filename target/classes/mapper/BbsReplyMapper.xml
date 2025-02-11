@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="com.ict.myapp.dao.BbsReplyDAO">
+  	<insert id="replyInsert">
+  		insert into bbsReply(news_no, comment, userid) values(${news_no}, #{comment}, #{userid})
+  	</insert>
+  	<select id="replyList" resultType="com.ict.myapp.vo.BbsReplyVO">
+  		select reply_no, comment, userid, writedate from bbsReply
+  		where news_no=${param1} order by reply_no asc
+  	</select>
+  </mapper>

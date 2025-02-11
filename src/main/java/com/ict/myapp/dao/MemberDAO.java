@@ -24,4 +24,7 @@ public interface MemberDAO {
 		//아이디찾기
 		
 		//비밀번호찾기
+		
+		//아이디 중복검사
+		public int idDuplicate(String userid);
 }
