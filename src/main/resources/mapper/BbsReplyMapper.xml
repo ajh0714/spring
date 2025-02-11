@@ -10,4 +10,7 @@
   		select reply_no, comment, userid, writedate from bbsReply
   		where news_no=${param1} order by reply_no asc
   	</select>
+  	<update id="replyUpdate">
+  		update bbsReply set comment=#{comment} where reply_no=${reply_no}
+  	</update>
   </mapper>

@@ -37,4 +37,10 @@ public class BbsReplyController {
 	public List<BbsReplyVO> bbsReplyList(int news_no) {
 		return service.replyList(news_no);
 	}
+	//´ñ±Û¼öÁ¤
+	@PostMapping("/bbsReplyEdit")
+	@ResponseBody
+	public String bbsReplyEdit(BbsReplyVO vo) {	
+		return service.replyUpdate(vo)+"";
+	}
 }

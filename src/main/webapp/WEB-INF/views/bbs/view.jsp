@@ -14,6 +14,8 @@
 	$(function(){
 		//댓글목록 : 비동기로 댓글목록 가져오기---------------------------------------
 		function replyList(){
+			//기존 목록 지우기
+			$("#replyList").html("");
 			//DB에서 현재글과 관련있는 댓글목록을 가져오기
 			
 			var params = {
@@ -36,11 +38,19 @@
 				 			tag += `
 				 				<input type='button' value ='Edit'/>
 				 				<input type='button' value ='Del'/>
+				 				
+				 				<div style = 'display:none'>
+				 					<form method='post'>
+				 						<input type='hidden' name='reply_no' value='`+ rVO.reply_no +`'/>
+				 						<textarea name='comment' style='width:500px;height:100px;'>`+ rVO.comment +`</textarea>
+				 						<input type='submit' value='댓글수정하기'/>
+				 					</form>
+				 				</div>
 				 				`;
 				 		}
 				 		tag += `<div style="font-weight:bold">`+ rVO.comment +`</div>
 				 		<hr/>
-					</p>`
+					</p>`;
 					$("#replyList").append(tag);
 					});
 					
@@ -79,8 +89,40 @@
 			});
 			
 		});
-		//댓글수정 ---------------------------------------
+		//댓글수정폼 보여주기 : Edit버튼 클릭시
+	/* 	$("input[value=Edit]").click(function(){
+			
+		}); */
+		//				이벤트종류    대상     콜백함수
+		$(document).on('click','input[value=Edit]',function(){
+			//아이디,날짜들 숨기기
+			$(this).parent().css('display','none');
+			//수정을 보여주기
+			$(this).parent().next().css("display","block")
+			$(this).parent().next().next().css('display','none');
+		});
 		
+		//댓글수정(DB update -> 리스트)
+		$(document).on('submit','form',function(){
+			event.preventDefault(); //기본이베튼 제거하기 a태그,form태그 페이지를 이동하는 기본이벤트가 있으며,
+									//이를 해제하여야 페이지를 이동하기 않는다.
+			var params = $(this).serialize(); //데이터준비 reply_no=2&comment=jfdkslfjd
+			
+			$.ajax({
+				url : "/myapp/reply/bbsReplyEdit",
+				data : params,
+				type : "POST",
+				success : function(results){
+					if(results=="0"){
+						alert("댓글이 수정되지 않았습니다.");
+					}else{
+						replyList();
+					}
+				},error : function(error){
+					console.log(error.responseText);
+				}
+			});
+		});
 		//댓글삭제 ---------------------------------------
 		
 		//댓글목록출력 : 처음 글내용보기로 오면 댓글목록이 나와야 함.
