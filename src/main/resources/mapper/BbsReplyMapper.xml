@@ -13,4 +13,7 @@
   	<update id="replyUpdate">
   		update bbsReply set comment=#{comment} where reply_no=${reply_no}
   	</update>
+  	<delete id="replyDelete">
+  		delete from bbsReply where reply_no=${param1}
+  	</delete>
   </mapper>

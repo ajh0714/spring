@@ -37,7 +37,7 @@
 				 		if(rVO.userid == '${logid}'){
 				 			tag += `
 				 				<input type='button' value ='Edit'/>
-				 				<input type='button' value ='Del'/>
+				 				<input type='button' value ='Del' title="`+rVO.reply_no+`"/>
 				 				
 				 				<div style = 'display:none'>
 				 					<form method='post'>
@@ -124,7 +124,26 @@
 			});
 		});
 		//댓글삭제 ---------------------------------------
-		
+		$(document).on('click','input[value=Del]',function(){
+			if(confirm("댓글을 삭제하시겠습니까?")){
+				
+				//삭제할 레코드 정보 구하기
+			var params = {
+					reply_no: $(this).attr("title")
+			}
+			$.ajax({
+				url : '${pageContext.request.contextPath}/reply/bbsReplyDelete',
+				data : params,
+				type : "GET",
+				success: function(results){
+					console.log(results, typeof(results));
+					replyList();
+				},error : function(error){
+					console.log(error.responseText);
+				}
+			});
+			}
+		});
 		//댓글목록출력 : 처음 글내용보기로 오면 댓글목록이 나와야 함.
 		replyList();
 	});

@@ -43,4 +43,10 @@ public class BbsReplyController {
 	public String bbsReplyEdit(BbsReplyVO vo) {	
 		return service.replyUpdate(vo)+"";
 	}
+	//¥Ò±€ªË¡¶
+	@GetMapping("/bbsReplyDelete")
+	@ResponseBody
+	public Integer bbsReplyDelete(int reply_no) {
+		return service.replyDelete(reply_no);
+	}
 }
