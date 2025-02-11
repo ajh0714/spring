@@ -26,6 +26,24 @@
 				success : function(results){
 					console.log(results);
 					
+					$(results).each(function(idx, rVO){
+					var tag =
+					`<p>
+				 		<b>`+rVO.userid+`</b>(`+ rVO.writedate +`)`
+				 		// 본인이 쓴 댓글일 때 수정 삭제 버튼을 표시한다
+				 		// 현재 생성되는 댓글쓴이와 로그인 한 아이디가 일치하면 
+				 		if(rVO.userid == '${logid}'){
+				 			tag += `
+				 				<input type='button' value ='Edit'/>
+				 				<input type='button' value ='Del'/>
+				 				`;
+				 		}
+				 		tag += `<div style="font-weight:bold">`+ rVO.comment +`</div>
+				 		<hr/>
+					</p>`
+					$("#replyList").append(tag);
+					});
+					
 				}, error : function(e){
 					console.log(e.responseText);
 				}
@@ -103,18 +121,6 @@
 	<!-- 댓글목록 -->
 	<div style="background:#ddd;">댓글목록</div>
 	<div id="replyList">
-		<p>
-			<b>goguma(2024-02-10)</b>
-			<input type="button" value="Edit"/>		
-			<input type="button" value="Del"/>
-			<div style="font-weight:bold">댓글내용</div>
-			<hr/>
-		</p>
-		<p>
-		 	gildong(2024-02-10)
-		 	<div style="font-weight:bold">댓글내용</div>
-		 	<hr/>
-		</p>
 	</div>
 </div>
 </div>
